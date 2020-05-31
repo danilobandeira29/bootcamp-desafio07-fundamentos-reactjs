@@ -41,10 +41,14 @@ const Dashboard: React.FC = () => {
         (trans: Transaction) => ({
           ...trans,
           formattedValue: formatValue(trans.value),
-          formattedDate: trans.created_at,
+          formattedDate: new Date(trans.created_at).toLocaleDateString('pt-BR'),
         }),
       );
-      const newBalance = response.data.balance;
+      const newBalance = {
+        income: formatValue(Number(response.data.balance.income)),
+        outcome: formatValue(Number(response.data.balance.outcome)),
+        total: formatValue(Number(response.data.balance.total)),
+      };
 
       setTransactions(allTransactions);
       setBalance(newBalance);
@@ -63,27 +67,21 @@ const Dashboard: React.FC = () => {
               <p>Entradas</p>
               <img src={income} alt="Income" />
             </header>
-            <h1 data-testid="balance-income">
-              {formatValue(Number(balance.income))}
-            </h1>
+            <h1 data-testid="balance-income">{balance.income}</h1>
           </Card>
           <Card>
             <header>
               <p>Saídas</p>
               <img src={outcome} alt="Outcome" />
             </header>
-            <h1 data-testid="balance-outcome">
-              {formatValue(Number(balance.outcome))}
-            </h1>
+            <h1 data-testid="balance-outcome">{balance.outcome}</h1>
           </Card>
           <Card total>
             <header>
               <p>Total</p>
               <img src={total} alt="Total" />
             </header>
-            <h1 data-testid="balance-total">
-              {formatValue(Number(balance.total))}
-            </h1>
+            <h1 data-testid="balance-total">{balance.total}</h1>
           </Card>
         </CardContainer>
 
